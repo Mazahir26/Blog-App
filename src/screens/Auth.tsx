@@ -32,53 +32,33 @@ function SignUp() {
 
 export default function MyTabs() {
   return (
-    <Tab.Navigator
-      //         tabStyle: {
-      //             borderRadius: 100,
-      //         },
-      //     }}
-      //     swipeEnabled={true}>
-      // tabBar={(props) => <MyTabBar {...props} />}
-      screenOptions={{
-        activeTintColor: "white",
-        tabBarLabelStyle: { textTransform: "uppercase" },
-        inactiveTintColor: "gray",
-        tabBarIndicatorStyle: {
-          height: null,
-          top: "10%",
-          bottom: "10%",
-          width: "45%",
-          left: "2.5%",
-          borderRadius: 100,
-          backgroundColor: "yellow",
-        },
-        tabBarContentContainerStyle: {
-          alignSelf: "center",
-          width: "50%",
-          borderRadius: 100,
-          borderColor: "blue",
-          backgroundColor: "white",
-          elevation: 5, // shadow on Android
-          shadowOpacity: 0.1, // shadow on iOS,
-          shadowRadius: 4, // shadow blur on iOS
-        },
-      }}
-    >
+    <Tab.Navigator tabBar={(props: any) => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={Login} />
       <Tab.Screen name="Settings" component={SignUp} />
     </Tab.Navigator>
   );
 }
 
-function MyTabBar({ state, descriptors, navigation, position }) {
-  const inputRange = state.routes.map((_, i) => i);
-  const opacity = position.interpolate({
+function MyTabBar({ state, descriptors, navigation, position }: any) {
+  const width = 100;
+  const inputRange = state.routes.map((_: any, i: any) => i);
+  const op = position.interpolate({
     inputRange,
-    outputRange: inputRange.map((i) => (i === state.index ? 1 : 0.5)),
+    outputRange: inputRange.map((i: any) => i * width),
   });
   return (
     <View style={styles.TabBar}>
-      {state.routes.map((route, index) => {
+      <Animated.View
+        style={{
+          position: "absolute",
+          height: 45,
+          width: width,
+          backgroundColor: "#343434",
+          transform: [{ translateX: op }],
+          borderRadius: width / 2,
+        }}
+      />
+      {state.routes.map((route: any, index: any) => {
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -108,10 +88,10 @@ function MyTabBar({ state, descriptors, navigation, position }) {
           });
         };
 
-        const inputRange = state.routes.map((_, i) => i);
+        const inputRange = state.routes.map((_: any, i: any) => i);
         const opacity = position.interpolate({
           inputRange,
-          outputRange: inputRange.map((i) => (i === index ? 1 : 0)),
+          outputRange: inputRange.map((i: any) => (i === index ? 1 : 0)),
         });
 
         return (
@@ -120,9 +100,16 @@ function MyTabBar({ state, descriptors, navigation, position }) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ justifyContent: "center", flex: 1 }}
+            style={{
+              justifyContent: "center",
+              width: width,
+            }}
           >
-            <Animated.Text style={{ opacity }}>{label}</Animated.Text>
+            <Animated.Text
+              style={{ opacity, textAlign: "center", color: "white" }}
+            >
+              {label}
+            </Animated.Text>
           </TouchableOpacity>
         );
       })}
@@ -135,6 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 30,
     height: 45,
+    marginLeft: 30,
   },
 });
 
