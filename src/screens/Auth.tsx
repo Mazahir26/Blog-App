@@ -44,7 +44,7 @@ function MyTabBar({ state, descriptors, navigation, position }: any) {
   const inputRange = state.routes.map((_: any, i: any) => i);
   const op = position.interpolate({
     inputRange,
-    outputRange: inputRange.map((i: any) => i * width),
+    outputRange: inputRange.map((i: any) => i * (width + 5)),
   });
   return (
     <View style={styles.TabBar}>
@@ -58,71 +58,106 @@ function MyTabBar({ state, descriptors, navigation, position }: any) {
           borderRadius: width / 2,
         }}
       />
-      {state.routes.map((route: any, index: any) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
+      <View
+        style={{
+          flexDirection: "row",
+          borderWidth: 1,
+          width: state.routes.length * width + 5,
+          height: 45,
+          borderRadius: (state.routes.length * width + 5) / 2,
+        }}
+      >
+        {state.routes.map((route: any, index: any) => {
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name;
 
-        const isFocused = state.index === index;
+          const isFocused = state.index === index;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true,
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate({ name: route.name, merge: true });
+            }
+          };
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: "tabLongPress",
+              target: route.key,
+            });
+          };
+
+          const inputRange = state.routes.map((_: any, i: any) => i);
+          const opacity = position.interpolate({
+            inputRange,
+            outputRange: inputRange.map((i: any) => (i === index ? 1 : 0)),
           });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate({ name: route.name, merge: true });
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: "tabLongPress",
-            target: route.key,
+          const opacity_2 = position.interpolate({
+            inputRange,
+            outputRange: inputRange.map((i: any) => (i === index ? 0 : 1)),
           });
-        };
-
-        const inputRange = state.routes.map((_: any, i: any) => i);
-        const opacity = position.interpolate({
-          inputRange,
-          outputRange: inputRange.map((i: any) => (i === index ? 1 : 0)),
-        });
-
-        return (
-          <TouchableOpacity
-            key={label}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              justifyContent: "center",
-              width: width,
-            }}
-          >
-            <Animated.Text
-              style={{ opacity, textAlign: "center", color: "white" }}
+          return (
+            <TouchableOpacity
+              key={label}
+              testID={options.tabBarTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={{
+                width: width,
+                marginRight: 5,
+              }}
             >
-              {label}
-            </Animated.Text>
-          </TouchableOpacity>
-        );
-      })}
+              <Animated.View
+                style={{
+                  justifyContent: "center",
+                  flex: 1,
+                  borderRadius: width / 2,
+                  alignItems: "center",
+                }}
+              >
+                <Animated.Text
+                  style={{
+                    opacity,
+                    textAlign: "center",
+                    color: "white",
+                    position: "absolute",
+                  }}
+                >
+                  {label}
+                </Animated.Text>
+                <Animated.Text
+                  style={{
+                    opacity: opacity_2,
+                    textAlign: "center",
+                    color: "black",
+                    position: "absolute",
+                  }}
+                >
+                  {label}
+                </Animated.Text>
+              </Animated.View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   TabBar: {
-    flexDirection: "row",
     marginTop: 30,
-    height: 45,
-    marginLeft: 30,
+    alignSelf: "center",
   },
 });
 
