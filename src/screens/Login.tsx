@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
-import { TextInput } from "react-native-paper";
+import { TextInput, HelperText } from "react-native-paper";
 
 export default function Login({ navigation }: Props) {
   const [Email, setEmail] = React.useState("");
@@ -40,12 +40,22 @@ export default function Login({ navigation }: Props) {
           />
         }
       />
+      <HelperText type="error" visible={Error.length > 0}>
+        Email address is invalid!
+      </HelperText>
       <TouchableOpacity style={styles.button}>
         <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-        <Text>Login</Text>
+      <TouchableOpacity
+        style={{ alignSelf: "center", marginVertical: 5 }}
+        onPress={() => navigation.navigate("SignUp")}
+      >
+        <Text>New here? SignUp</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
+      >
+        <Text>Don't want an account? Guest login.</Text>
       </TouchableOpacity>
     </View>
   );
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
     color: "#343434",
   },
   input: {
-    marginBottom: 12,
+    marginTop: 12,
   },
   button: {
     backgroundColor: "#343434",
