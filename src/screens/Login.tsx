@@ -1,18 +1,42 @@
 import * as React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
 import { TextInput, HelperText } from "react-native-paper";
+import { useTheme } from "@react-navigation/native";
 
 export default function Login({ navigation }: Props) {
+  const { colors } = useTheme();
   const [Email, setEmail] = React.useState("");
   const [Password, setPassword] = React.useState("");
   const [Visible, setVisible] = React.useState(false);
   const [Error, setError] = React.useState("");
 
+  React.useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+    };
+  }, []);
+
+  const [keyboardStatus, setKeyboardStatus] = React.useState(false);
+  const _keyboardDidShow = () => setKeyboardStatus(true);
+  const _keyboardDidHide = () => setKeyboardStatus(false);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.subheading}>Welcome back,</Text>
-      <Text style={styles.heading}>Login</Text>
+      <Text style={[styles.subheading, { color: colors.text }]}>
+        Welcome back,
+      </Text>
+      <Text style={[styles.heading, { color: colors.text }]}>Login</Text>
       <TextInput
         error={Error.length > 0}
         style={styles.input}
@@ -21,7 +45,7 @@ export default function Login({ navigation }: Props) {
         onChangeText={(text) => setEmail(text)}
         mode="outlined"
         selectionColor="gray"
-        theme={{ colors: { primary: "#343434" }, roundness: 10 }}
+        theme={{ colors: { primary: colors.primary }, roundness: 10 }}
       />
       <TextInput
         error={Error.length > 0}
@@ -31,7 +55,7 @@ export default function Login({ navigation }: Props) {
         onChangeText={(text) => setPassword(text)}
         mode="outlined"
         selectionColor="gray"
-        theme={{ colors: { primary: "#343434" }, roundness: 10 }}
+        theme={{ colors: { primary: colors.primary }, roundness: 10 }}
         secureTextEntry={Visible}
         right={
           <TextInput.Icon
@@ -43,20 +67,26 @@ export default function Login({ navigation }: Props) {
       <HelperText type="error" visible={Error.length > 0}>
         Email address is invalid!
       </HelperText>
-      <TouchableOpacity style={styles.button}>
-        <Text style={{ color: "white", fontSize: 18 }}>Login</Text>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: colors.primary }]}
+      >
+        <Text style={{ color: colors.background, fontSize: 18 }}>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{ alignSelf: "center", marginVertical: 5 }}
         onPress={() => navigation.navigate("SignUp")}
       >
-        <Text>New here? SignUp</Text>
+        <Text style={{ color: colors.text }}>New here? SignUp</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
-      >
-        <Text>Don't want an account? Guest login.</Text>
-      </TouchableOpacity>
+      {keyboardStatus ? null : (
+        <TouchableOpacity
+          style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
+        >
+          <Text style={{ color: colors.text }}>
+            Don't want an account? Guest login.
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

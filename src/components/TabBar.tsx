@@ -1,5 +1,6 @@
 import * as React from "react";
 import { View, TouchableOpacity, Animated, StyleSheet } from "react-native";
+import { useTheme } from "@react-navigation/native";
 
 export default function MyTabBar({
   state,
@@ -7,6 +8,7 @@ export default function MyTabBar({
   navigation,
   position,
 }: any) {
+  const { colors, dark } = useTheme();
   const width = 100;
   const inputRange = state.routes.map((_: any, i: any) => i);
   const op = position.interpolate({
@@ -20,7 +22,7 @@ export default function MyTabBar({
           position: "absolute",
           height: 40,
           width: width,
-          backgroundColor: "#343434",
+          backgroundColor: colors.primary,
           transform: [{ translateX: op }],
           borderRadius: width / 2,
         }}
@@ -100,7 +102,7 @@ export default function MyTabBar({
                     opacity,
                     transform: [{ scale: Scale }],
                     textAlign: "center",
-                    color: "white",
+                    color: dark ? "#343434" : "#ececec",
                     position: "absolute",
                   }}
                 >
@@ -111,7 +113,7 @@ export default function MyTabBar({
                     opacity: opacity_2,
                     transform: [{ scale: Scale }],
                     textAlign: "center",
-                    color: "black",
+                    color: colors.text,
                     position: "absolute",
                   }}
                 >
