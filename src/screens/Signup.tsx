@@ -20,10 +20,10 @@ export default function Login({ navigation }: Props) {
   const [Visible, setVisible] = React.useState(false);
   const [Error, setError] = React.useState("");
 
-  const onLogin = async () => {
+  const onSingup = async () => {
     try {
       if (Email !== "" && Password !== "") {
-        await auth.signInWithEmailAndPassword(Email, Password);
+        await auth.createUserWithEmailAndPassword(Email, Password);
       }
     } catch (error) {
       setError(error.message);
@@ -46,9 +46,9 @@ export default function Login({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text style={[styles.subheading, { color: colors.text }]}>
-        Welcome back,
+        Hey There,
       </Text>
-      <Text style={[styles.heading, { color: colors.text }]}>Login</Text>
+      <Text style={[styles.heading, { color: colors.text }]}>SignUp</Text>
       <TextInput
         error={Error.length > 0}
         style={styles.input}
@@ -80,16 +80,18 @@ export default function Login({ navigation }: Props) {
         Email address is invalid!
       </HelperText>
       <TouchableOpacity
-        onPress={() => onLogin()}
+        onPress={() => onSingup()}
         style={[styles.button, { backgroundColor: colors.primary }]}
       >
-        <Text style={{ color: colors.background, fontSize: 18 }}>Login</Text>
+        <Text style={{ color: colors.background, fontSize: 18 }}>SignUp</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{ alignSelf: "center", marginVertical: 5 }}
-        onPress={() => navigation.navigate("SignUp")}
+        onPress={() => navigation.navigate("Login")}
       >
-        <Text style={{ color: colors.text }}>New here? SignUp</Text>
+        <Text style={{ color: colors.text }}>
+          Already have an account? Login.
+        </Text>
       </TouchableOpacity>
       {keyboardStatus ? null : (
         <TouchableOpacity
