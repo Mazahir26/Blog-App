@@ -1,6 +1,6 @@
 import firebase from "@firebase/app";
-import "@firebase/auth";
 import { firebaseConfig } from "./config";
+import "@firebase/auth";
 
 let Firebase: any = null;
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Appearance, View, ActivityIndicator } from "react-native";
-import AuthFlow from "./Auth";
+import AuthFlow from "./AuthFlow";
 import Home from "./home";
 import Firebase from "../config/firebase";
 import {

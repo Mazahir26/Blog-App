@@ -1,47 +1,51 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Keyboard,
-} from "react-native";
-import Firebase from "../config/firebase";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
-import { TextInput, HelperText } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
+import AuthTextInput from "../components/AuthInputs";
+
+import Firebase from "../config/firebase";
+import useOnKeyboard from "../hooks/useOnKeyboard";
 
 const auth = Firebase.auth();
 
 export default function Login({ navigation }: Props) {
+  const keyboardStatus = useOnKeyboard();
   const { colors } = useTheme();
   const [Email, setEmail] = React.useState("");
+  const [Name, setName] = React.useState("");
   const [Password, setPassword] = React.useState("");
-  const [Visible, setVisible] = React.useState(false);
   const [Error, setError] = React.useState("");
 
+  const updateProfile = async () => {
+    try {
+      await auth.currentUser.updateProfile({
+        displayName: Name,
+        photoURL:
+          "https://ui-avatars.com/api/?rounded=true&background=808080&size=128&bold=true&name=" +
+          Name,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const onSingup = async () => {
     try {
-      if (Email !== "" && Password !== "") {
+      if (Email !== "" && Password !== "" && Name !== "") {
         await auth.createUserWithEmailAndPassword(Email, Password);
+        updateProfile();
       }
     } catch (error) {
       setError(error.message);
     }
   };
-  React.useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-
-    return () => {
-      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-    };
-  }, []);
-
-  const [keyboardStatus, setKeyboardStatus] = React.useState(false);
-  const _keyboardDidShow = () => setKeyboardStatus(true);
-  const _keyboardDidHide = () => setKeyboardStatus(false);
+  const signInAnonymously = async () => {
+    try {
+      await auth.signInAnonymously();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -49,58 +53,56 @@ export default function Login({ navigation }: Props) {
         Hey There,
       </Text>
       <Text style={[styles.heading, { color: colors.text }]}>SignUp</Text>
-      <TextInput
-        error={Error.length > 0}
-        style={styles.input}
-        label="Email*"
+      <AuthTextInput
+        value={Name}
+        setvalue={(t: string) => setName(t)}
+        isPassWord={false}
+        isLoading={false}
+        placeHolder="Name*"
+        error={Error}
+      />
+      <AuthTextInput
         value={Email}
-        onChangeText={(text) => setEmail(text)}
-        mode="outlined"
-        selectionColor="gray"
-        theme={{ colors: { primary: colors.primary }, roundness: 10 }}
+        setvalue={(t: string) => setEmail(t)}
+        isPassWord={false}
+        isLoading={false}
+        placeHolder="Email*"
+        error={Error}
       />
-      <TextInput
-        error={Error.length > 0}
-        style={styles.input}
-        label="Password*"
+      <AuthTextInput
         value={Password}
-        onChangeText={(text) => setPassword(text)}
-        mode="outlined"
-        selectionColor="gray"
-        theme={{ colors: { primary: colors.primary }, roundness: 10 }}
-        secureTextEntry={Visible}
-        right={
-          <TextInput.Icon
-            name={Visible ? "eye" : "eye-off"}
-            onPress={() => setVisible(!Visible)}
-          />
-        }
+        setvalue={(t: string) => setPassword(t)}
+        isPassWord={true}
+        isLoading={false}
+        placeHolder="Password*"
+        error={Error}
       />
-      <HelperText type="error" visible={Error.length > 0}>
-        Email address is invalid!
-      </HelperText>
       <TouchableOpacity
         onPress={() => onSingup()}
         style={[styles.button, { backgroundColor: colors.primary }]}
       >
         <Text style={{ color: colors.background, fontSize: 18 }}>SignUp</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{ alignSelf: "center", marginVertical: 5 }}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={{ color: colors.text }}>
-          Already have an account? Login.
-        </Text>
-      </TouchableOpacity>
+
       {keyboardStatus ? null : (
-        <TouchableOpacity
-          style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
-        >
-          <Text style={{ color: colors.text }}>
-            Don't want an account? Guest login.
-          </Text>
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity
+            style={{ alignSelf: "center", marginVertical: 5 }}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={{ color: colors.text }}>
+              Already have an account? Login.
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={signInAnonymously}
+            style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
+          >
+            <Text style={{ color: colors.text }}>
+              Don't want an account? Guest login.
+            </Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     paddingHorizontal: 15,
     justifyContent: "center",
+    marginTop: 10,
   },
   heading: {
     fontWeight: "bold",

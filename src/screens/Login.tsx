@@ -1,23 +1,17 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Keyboard,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Firebase from "../config/firebase";
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
-import { TextInput, HelperText } from "react-native-paper";
+import AuthTextInput from "../components/AuthInputs";
 import { useTheme } from "@react-navigation/native";
-
+import useOnKeyboard from "../hooks/useOnKeyboard";
 const auth = Firebase.auth();
 
 export default function Login({ navigation }: Props) {
+  const keyboardStatus = useOnKeyboard();
   const { colors } = useTheme();
   const [Email, setEmail] = React.useState("");
   const [Password, setPassword] = React.useState("");
-  const [Visible, setVisible] = React.useState(false);
   const [Error, setError] = React.useState("");
 
   const onLogin = async () => {
@@ -29,19 +23,13 @@ export default function Login({ navigation }: Props) {
       setError(error.message);
     }
   };
-  React.useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-
-    return () => {
-      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-    };
-  }, []);
-
-  const [keyboardStatus, setKeyboardStatus] = React.useState(false);
-  const _keyboardDidShow = () => setKeyboardStatus(true);
-  const _keyboardDidHide = () => setKeyboardStatus(false);
+  const signInAnonymously = async () => {
+    try {
+      await auth.signInAnonymously();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -49,36 +37,22 @@ export default function Login({ navigation }: Props) {
         Welcome back,
       </Text>
       <Text style={[styles.heading, { color: colors.text }]}>Login</Text>
-      <TextInput
-        error={Error.length > 0}
-        style={styles.input}
-        label="Email*"
+      <AuthTextInput
         value={Email}
-        onChangeText={(text) => setEmail(text)}
-        mode="outlined"
-        selectionColor="gray"
-        theme={{ colors: { primary: colors.primary }, roundness: 10 }}
+        setvalue={(t: string) => setEmail(t)}
+        isPassWord={false}
+        isLoading={false}
+        placeHolder="Email*"
+        error={Error}
       />
-      <TextInput
-        error={Error.length > 0}
-        style={styles.input}
-        label="Password*"
+      <AuthTextInput
         value={Password}
-        onChangeText={(text) => setPassword(text)}
-        mode="outlined"
-        selectionColor="gray"
-        theme={{ colors: { primary: colors.primary }, roundness: 10 }}
-        secureTextEntry={Visible}
-        right={
-          <TextInput.Icon
-            name={Visible ? "eye" : "eye-off"}
-            onPress={() => setVisible(!Visible)}
-          />
-        }
+        setvalue={(t: string) => setPassword(t)}
+        isPassWord={true}
+        isLoading={false}
+        placeHolder="Password*"
+        error={Error}
       />
-      <HelperText type="error" visible={Error.length > 0}>
-        Email address is invalid!
-      </HelperText>
       <TouchableOpacity
         onPress={() => onLogin()}
         style={[styles.button, { backgroundColor: colors.primary }]}
@@ -93,6 +67,7 @@ export default function Login({ navigation }: Props) {
       </TouchableOpacity>
       {keyboardStatus ? null : (
         <TouchableOpacity
+          onPress={signInAnonymously}
           style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
         >
           <Text style={{ color: colors.text }}>
@@ -130,9 +105,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: "center",
     color: "#343434",
-  },
-  input: {
-    marginTop: 12,
   },
   button: {
     backgroundColor: "#343434",
