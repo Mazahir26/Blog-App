@@ -2,7 +2,7 @@ import * as React from "react";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Appearance, View, ActivityIndicator } from "react-native";
 import AuthFlow from "./AuthFlow";
-import Home from "./home";
+import MainFlow from "./MainFlow";
 import Firebase from "../config/firebase";
 import {
   NavigationContainer,
@@ -70,7 +70,7 @@ function App() {
     <NavigationContainer
       theme={colorScheme === "dark" ? BlackTheme : LightTheme}
     >
-      {user ? <Home /> : <AuthFlow />}
+      {user ? <MainFlow /> : <AuthFlow />}
     </NavigationContainer>
   );
 }

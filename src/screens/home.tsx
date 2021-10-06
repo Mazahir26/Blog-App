@@ -22,7 +22,6 @@ export default function Home() {
   const { colors } = useTheme();
   //@ts-ignore
   const { user }: Context = React.useContext(AuthenticatedUserContext);
-  console.log(auth.currentUser);
   const handleSignOut = async () => {
     try {
       await auth.signOut();
