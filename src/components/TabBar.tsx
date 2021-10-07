@@ -50,12 +50,11 @@ export default function MyTabBar({
           style={{
             fontSize: 22,
             fontWeight: "bold",
-            color: colors.primary,
+            color: "#5fcb4b",
           }}
         >
           TC
         </Text>
-
         <Image
           style={{
             height: 35,
@@ -64,7 +63,7 @@ export default function MyTabBar({
           source={{
             uri: User.photoURL
               ? User.photoURL
-              : "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&name=Anonymous",
+              : "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&color=ececec&name=Anonymous",
           }}
         />
       </View>

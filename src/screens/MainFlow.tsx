@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "./home";
+import Feed from "./Feed";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 import MyTabBar from "../components/TabBar";
 const Tab = createMaterialTopTabNavigator();
@@ -20,13 +20,6 @@ interface Context {
   setUser?: any;
 }
 
-function TestScreen1() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Test 1 Screen</Text>
-    </View>
-  );
-}
 function TestScreen2() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -40,8 +33,8 @@ function Tabs() {
   const { user }: Context = React.useContext(AuthenticatedUserContext);
   return (
     <Tab.Navigator tabBar={(props: any) => <MyTabBar {...props} user={user} />}>
-      <Tab.Screen name="Latest" component={TestScreen1} />
-      <Tab.Screen name="Popular" component={TestScreen2} />
+      <Tab.Screen name="Latest" component={Feed} />
+      <Tab.Screen name="Saved" component={TestScreen2} />
     </Tab.Navigator>
   );
 }
@@ -54,7 +47,7 @@ export default function MainFlow() {
         name="Home"
         component={Tabs}
       />
-      <Stack.Screen name="test-1" component={Home} />
+      <Stack.Screen name="test-1" component={Feed} />
     </Stack.Navigator>
   );
 }

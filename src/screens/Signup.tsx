@@ -22,7 +22,7 @@ export default function Login({ navigation }: Props) {
       await auth.currentUser.updateProfile({
         displayName: Name,
         photoURL:
-          "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&name=" +
+          "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&color=ececec&name=" +
           Name,
       });
     } catch (e) {
