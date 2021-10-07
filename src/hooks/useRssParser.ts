@@ -12,7 +12,7 @@ type rssitem = {
 export default function useRssParser(Url: string) {
   const [Data, setData] = React.useState<null | rssitem[]>(null);
 
-  React.useEffect(() => {
+  function getData() {
     fetch(Url)
       .then((response) => response.text())
       .then((responseData) => rssParser.parse(responseData))
@@ -31,7 +31,14 @@ export default function useRssParser(Url: string) {
         });
         setData(data);
       });
+  }
+  function refresh() {
+    setData([]);
+    getData();
+  }
+  React.useEffect(() => {
+    getData();
   }, []);
 
-  return Data;
+  return { Data, refresh };
 }

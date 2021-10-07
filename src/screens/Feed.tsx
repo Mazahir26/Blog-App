@@ -1,43 +1,44 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import { ActivityIndicator, Card } from "react-native-paper";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
-import Firebase from "../config/firebase";
+// import Firebase from "../config/firebase";
 import useRssParser from "../hooks/useRssParser";
+import Card from "../components/Card";
 
-import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
+// import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 
-const auth = Firebase.auth();
+// const auth = Firebase.auth();
 
-type User = {
-  email: string;
-  uid: string;
-  isAnonymous: boolean;
-  displayName: string;
-};
-interface Context {
-  user: User;
-  setUser?: any;
-}
+// type User = {
+//   email: string;
+//   uid: string;
+//   isAnonymous: boolean;
+//   displayName: string;
+// };
+// interface Context {
+//   user: User;
+//   setUser?: any;
+// }
 
 export default function Home() {
   const { colors } = useTheme();
-  const Data: rssitem[] = useRssParser("https://techcrunch.com/feed");
   // //@ts-ignore
   // const { user }: Context = React.useContext(AuthenticatedUserContext);
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleSignOut = async () => {
+  //   try {
+  //     await auth.signOut();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const {
+    Data,
+    refresh,
+  }: { Data: rssitem[] | null; refresh: Function } = useRssParser(
+    "https://techcrunch.com/rss"
+  );
+
   if (Data == null) {
     return (
       <View style={styles.container}>
@@ -49,7 +50,23 @@ export default function Home() {
       </View>
     );
   }
-  return <View style={styles.container}></View>;
+  return (
+    <View style={styles.container}>
+      <FlatList
+        onRefresh={() => refresh()}
+        refreshing={Data.length == 0}
+        contentContainerStyle={{
+          width: "100%",
+          marginHorizontal: 0,
+        }}
+        data={Data}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({ item }) => {
+          return <Card Data={item} />;
+        }}
+      />
+    </View>
+  );
 }
 
 type rssitem = {
@@ -62,9 +79,8 @@ type rssitem = {
 };
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     flex: 1,
-    alignItems: "center",
     paddingHorizontal: 15,
-    justifyContent: "center",
   },
 });
