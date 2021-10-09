@@ -13,7 +13,6 @@ export default function Bottomsheet({
   Data,
   sheetref,
   Save,
-  isSaved,
 }: {
   Data: rssitem | null;
   sheetref: any;
@@ -22,7 +21,7 @@ export default function Bottomsheet({
 }) {
   const { width } = useWindowDimensions();
   const snapPoints = React.useMemo(() => ["50%", "100%"], []);
-  console.log(isSaved);
+  // console.log(isSaved);
   const tagsStyles = {
     body: {
       color: "gray",

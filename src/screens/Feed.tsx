@@ -6,25 +6,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import useRssParser from "../hooks/useRssParser";
 import Card from "../components/Card";
 import Bottomsheet from "../components/BottomSheet";
-
-import Firebase from "../config/firebase";
-const auth = Firebase.auth();
-const firestore = Firebase.firestore();
-
-function save(Data: rssitem | null) {
-  if (Data == null) return;
-  try {
-    firestore.collection(auth.currentUser.uid).doc(Data.Title).set({
-      Title: Data.Title,
-      Description: Data.Description,
-      Published: Data.Published,
-      Author: Data.Authors,
-      Link: Data.Link,
-    });
-  } catch (e) {
-    console.warn("Error adding document: ", e);
-  }
-}
+import { Context } from "../Context/SavedFeedContext";
 
 export default function Home() {
   const { colors } = useTheme();
@@ -35,30 +17,13 @@ export default function Home() {
     "https://techcrunch.com/rss"
   );
 
+  const { state, SaveFeed, getFeed }: any = React.useContext(Context);
   const sheetRef = React.useRef<BottomSheet>(null);
   const [currentIndex, setcurrentIndex] = React.useState<null | number>(null);
-  const [Saved, setSaved] = React.useState<[] | rssitem[]>([]);
 
-  function getSaved() {
-    let d: any = [];
-    try {
-      firestore
-        .collection(auth.currentUser.uid)
-        .get()
-        .then((querySnapshot: any) => {
-          console.log("Total Feeds", querySnapshot.size);
-          if (querySnapshot.size > 0) {
-            querySnapshot.forEach((documentSnapshot: any) => {
-              d.push(documentSnapshot.data());
-            });
-            setSaved(d);
-          }
-        });
-    } catch (e) {
-      console.warn("Error adding document: ", e);
-    }
-  }
-
+  console.log("======================");
+  console.log(state);
+  console.log("======================");
   const handleOpenPress = React.useCallback(() => {
     sheetRef.current?.snapToIndex(0);
   }, []);
@@ -66,7 +31,7 @@ export default function Home() {
     sheetRef.current?.close();
   }, []);
   React.useEffect(() => {
-    getSaved();
+    getFeed();
   }, []);
   React.useEffect(() => {
     if (currentIndex !== null) {
@@ -128,10 +93,8 @@ export default function Home() {
       <Bottomsheet
         Data={currentIndex === null ? null : Data[currentIndex]}
         sheetref={sheetRef}
-        Save={() => save(currentIndex === null ? null : Data[currentIndex])}
-        isSaved={
-          currentIndex === null ? false : Saved.includes(Data[currentIndex])
-        }
+        Save={() => SaveFeed(currentIndex === null ? null : Data[currentIndex])}
+        isSaved={false}
       />
     </View>
   );

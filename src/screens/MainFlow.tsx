@@ -27,13 +27,16 @@ function TestScreen2() {
     </View>
   );
 }
+function FeedScreen() {
+  return <Feed />;
+}
 
 function Tabs() {
   //@ts-ignore
   const { user }: Context = React.useContext(AuthenticatedUserContext);
   return (
     <Tab.Navigator tabBar={(props: any) => <MyTabBar {...props} user={user} />}>
-      <Tab.Screen name="Latest" component={Feed} />
+      <Tab.Screen name="Latest" component={FeedScreen} />
       <Tab.Screen name="Saved" component={TestScreen2} />
     </Tab.Navigator>
   );
@@ -47,7 +50,7 @@ export default function MainFlow() {
         name="Home"
         component={Tabs}
       />
-      <Stack.Screen name="test-1" component={Feed} />
+      <Stack.Screen name="test-1" component={TestScreen2} />
     </Stack.Navigator>
   );
 }
