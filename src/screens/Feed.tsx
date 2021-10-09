@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -17,7 +17,9 @@ export default function Home() {
     "https://techcrunch.com/rss"
   );
 
-  const { state, SaveFeed, getFeed }: any = React.useContext(Context);
+  const { state, SaveFeed, getFeed, Deletepost }: any = React.useContext(
+    Context
+  );
   const sheetRef = React.useRef<BottomSheet>(null);
   const [currentIndex, setcurrentIndex] = React.useState<null | number>(null);
 
@@ -61,12 +63,29 @@ export default function Home() {
     <View style={styles.container}>
       <FlatList
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <View
+            style={[
+              styles.container,
+              {
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <Text
+              style={{ fontSize: 22, fontWeight: "bold", textAlign: "center" }}
+            >
+              Something went wrong{"/n"} Try again later.
+            </Text>
+          </View>
+        )}
         onRefresh={() => {
           handleClosePress();
           setcurrentIndex(null);
           refresh();
         }}
-        refreshing={Data.length == 0}
+        refreshing={Data == null}
         contentContainerStyle={{
           width: "100%",
           marginHorizontal: 0,
@@ -92,6 +111,9 @@ export default function Home() {
         sheetref={sheetRef}
         Save={() => SaveFeed(currentIndex === null ? null : Data[currentIndex])}
         Saved={state == null ? [] : state}
+        unSave={() =>
+          Deletepost(currentIndex === null ? null : Data[currentIndex])
+        }
       />
     </View>
   );

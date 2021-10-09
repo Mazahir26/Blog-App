@@ -3,6 +3,14 @@ import Firebase from "../config/firebase";
 import { ToastAndroid } from "react-native";
 const auth = Firebase.auth();
 const firestore = Firebase.firestore();
+import { Platform, UIManager, LayoutAnimation } from "react-native";
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const SavedReducer = (state: rssitem[], action: ActionTypes) => {
   switch (action.type) {
@@ -20,17 +28,22 @@ const SavedReducer = (state: rssitem[], action: ActionTypes) => {
     case "getSavedFeed":
       return action.payload;
     case "removeSavedFeed":
-      if (typeof action.payload == "object") {
-        const t: rssitem[] = [];
-        state.map((item) => {
-          //@ts-ignore
-          if (item.Link != action.payload.Link) {
-            //@ts-ignore
-            t.push(action.payload);
-          }
-        });
-        return t;
-      } else return state;
+      const t: rssitem[] = [];
+      state.map((item) => {
+        if (item.Link !== action.payload.Link) {
+          t.push(item);
+        }
+      });
+      LayoutAnimation.configureNext(
+        LayoutAnimation.create(
+          200,
+          LayoutAnimation.Types.linear,
+          LayoutAnimation.Properties.scaleY
+        )
+      );
+      ToastAndroid.show("Removed", ToastAndroid.SHORT);
+
+      return t;
     default:
       return state;
   }
@@ -49,6 +62,28 @@ const SaveFeed = (dispatch: any) => async (Data: rssitem) => {
     };
     await firestore.collection(auth.currentUser.uid).doc(Data.Title).set(d);
     dispatch({ type: "addSavedFeed", payload: d });
+  } catch (e) {
+    console.warn("Error adding document: ", e);
+  }
+};
+const Deletepost = (dispatch: any) => async (Data: rssitem) => {
+  if (Data == null) return;
+
+  try {
+    const d = {
+      Title: Data.Title,
+      Description: Data.Description,
+      Published: Data.Published,
+      Author: Data.Authors,
+      Link: Data.Link,
+    };
+    await firestore
+      .collection(auth.currentUser.uid)
+      .doc(Data.Title)
+      .delete()
+      .then(() => {
+        dispatch({ type: "removeSavedFeed", payload: d });
+      });
   } catch (e) {
     console.warn("Error adding document: ", e);
   }
@@ -74,7 +109,7 @@ const getFeed = (dispatch: any) => async () => {
 
 export const { Provider, Context } = createDataContext(
   SavedReducer,
-  { SaveFeed, getFeed },
+  { SaveFeed, getFeed, Deletepost },
   null
 );
 

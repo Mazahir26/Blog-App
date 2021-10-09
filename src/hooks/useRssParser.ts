@@ -33,7 +33,7 @@ export default function useRssParser(Url: string) {
       });
   }
   function refresh() {
-    setData([]);
+    setData(null);
     getData();
   }
   React.useEffect(() => {

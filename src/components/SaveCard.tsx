@@ -1,20 +1,15 @@
 import * as React from "react";
 import { View } from "react-native";
-import {
-  Card,
-  Paragraph,
-  Title,
-  TouchableRipple,
-  Button,
-} from "react-native-paper";
+import { Card, Paragraph, Title, Button } from "react-native-paper";
+import * as WebBrowser from "expo-web-browser";
 
 export default function Home({
   Data,
-  onPress,
+  onDelete,
   index,
 }: {
   Data: rssitem;
-  onPress: Function;
+  onDelete: Function;
   index: number;
 }) {
   const date = new Date(Data.Published.toString());
@@ -50,11 +45,22 @@ export default function Home({
       </Card.Content>
       <Card.Actions>
         <Button
+          style={{ flex: 1 }}
           icon="delete"
           mode="text"
-          onPress={() => console.log("Pressed")}
+          onPress={() => onDelete(index)}
+          color="crimson"
         >
           Delete
+        </Button>
+        <Button
+          style={{ flex: 1 }}
+          icon="open-in-app"
+          mode="text"
+          onPress={() => WebBrowser.openBrowserAsync(Data.Link.toString())}
+          color="dodgerblue"
+        >
+          Open
         </Button>
       </Card.Actions>
     </Card>

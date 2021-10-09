@@ -1,15 +1,13 @@
 import * as React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import Card from "../components/SaveCard";
 import { Context } from "../Context/SavedFeedContext";
-
 export default function Home() {
   const { colors } = useTheme();
 
-  const { state, SaveFeed, getFeed }: any = React.useContext(Context);
-  const [currentIndex, setcurrentIndex] = React.useState<null | number>(null);
+  const { state, Deletepost, getFeed }: any = React.useContext(Context);
 
   // //@ts-ignore
   // const { user }: Context = React.useContext(AuthenticatedUserContext);
@@ -37,9 +35,25 @@ export default function Home() {
       <FlatList
         showsVerticalScrollIndicator={false}
         onRefresh={() => {
-          setcurrentIndex(null);
           getFeed();
         }}
+        ListEmptyComponent={() => (
+          <View
+            style={[
+              styles.container,
+              {
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <Text
+              style={{ fontSize: 22, fontWeight: "bold", textAlign: "center" }}
+            >
+              Looks Empty {"\n"} Try to save a post.
+            </Text>
+          </View>
+        )}
         refreshing={state == null}
         contentContainerStyle={{
           width: "100%",
@@ -50,8 +64,8 @@ export default function Home() {
         renderItem={({ item, index }) => (
           <Card
             Data={item}
-            onPress={(i: number) => {
-              setcurrentIndex(i);
+            onDelete={(i: number) => {
+              Deletepost(state[i]);
             }}
             index={index}
           />
