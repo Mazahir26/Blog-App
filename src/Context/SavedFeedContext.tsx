@@ -75,7 +75,7 @@ const getFeed = (dispatch: any) => async () => {
 export const { Provider, Context } = createDataContext(
   SavedReducer,
   { SaveFeed, getFeed },
-  []
+  null
 );
 
 type rssitem = {

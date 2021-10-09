@@ -2,6 +2,7 @@ import * as React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Feed from "./Feed";
+import Saved from "./SavedPosts";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 import MyTabBar from "../components/TabBar";
 const Tab = createMaterialTopTabNavigator();
@@ -37,7 +38,7 @@ function Tabs() {
   return (
     <Tab.Navigator tabBar={(props: any) => <MyTabBar {...props} user={user} />}>
       <Tab.Screen name="Latest" component={FeedScreen} />
-      <Tab.Screen name="Saved" component={TestScreen2} />
+      <Tab.Screen name="Saved" component={Saved} />
     </Tab.Navigator>
   );
 }
