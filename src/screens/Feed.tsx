@@ -21,9 +21,6 @@ export default function Home() {
   const sheetRef = React.useRef<BottomSheet>(null);
   const [currentIndex, setcurrentIndex] = React.useState<null | number>(null);
 
-  console.log("======================");
-  console.log(state);
-  console.log("======================");
   const handleOpenPress = React.useCallback(() => {
     sheetRef.current?.snapToIndex(0);
   }, []);
@@ -94,7 +91,7 @@ export default function Home() {
         Data={currentIndex === null ? null : Data[currentIndex]}
         sheetref={sheetRef}
         Save={() => SaveFeed(currentIndex === null ? null : Data[currentIndex])}
-        isSaved={false}
+        Saved={state}
       />
     </View>
   );

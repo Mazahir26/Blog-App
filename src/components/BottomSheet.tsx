@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, useWindowDimensions, Text } from "react-native";
+import { StyleSheet, useWindowDimensions, Text, Alert } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import RenderHtml from "react-native-render-html";
 import { FAB } from "react-native-paper";
@@ -13,15 +13,26 @@ export default function Bottomsheet({
   Data,
   sheetref,
   Save,
+  Saved,
 }: {
   Data: rssitem | null;
   sheetref: any;
   Save: Function;
-  isSaved: boolean;
+  Saved: rssitem[];
 }) {
   const { width } = useWindowDimensions();
   const snapPoints = React.useMemo(() => ["50%", "100%"], []);
   // console.log(isSaved);
+  function isSaved() {
+    if (Data == null) return false;
+    let result = false;
+    Saved.map((i) => {
+      if (i.Link === Data.Link) {
+        result = true;
+      }
+    });
+    return result;
+  }
   const tagsStyles = {
     body: {
       color: "gray",
@@ -64,11 +75,20 @@ export default function Bottomsheet({
       </BottomSheetScrollView>
       <FAB
         style={styles.fab}
-        color="steelblue"
+        color={isSaved() ? "steelblue" : "#ececec"}
         small={false}
-        icon="bookmark-outline"
+        icon={isSaved() ? "bookmark" : "bookmark-outline"}
         // label={"save"}
-        onPress={() => Save()}
+        onPress={() => {
+          if (Saved.length >= 5) {
+            Alert.alert(
+              "Saved Posts Limit Reached",
+              "You can't save more than 5 posts, try removing old saved post.",
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+              { cancelable: false }
+            );
+          } else Save();
+        }}
       />
     </BottomSheet>
   );

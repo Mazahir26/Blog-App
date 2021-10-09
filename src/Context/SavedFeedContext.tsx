@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import Firebase from "../config/firebase";
+import { ToastAndroid } from "react-native";
 const auth = Firebase.auth();
 const firestore = Firebase.firestore();
 
@@ -12,8 +13,10 @@ const SavedReducer = (state: rssitem[], action: ActionTypes) => {
           notdupli = false;
         }
       });
-      if (notdupli) return [...state, action.payload];
-      else return state;
+      if (notdupli) {
+        ToastAndroid.show("Saved", ToastAndroid.SHORT);
+        return [...state, action.payload];
+      } else return state;
     case "getSavedFeed":
       return action.payload;
     case "removeSavedFeed":
@@ -57,13 +60,11 @@ const getFeed = (dispatch: any) => async () => {
       .collection(auth.currentUser.uid)
       .get()
       .then((querySnapshot: any) => {
-        // console.log("Total Feeds", querySnapshot.size);
         if (querySnapshot.size > 0) {
           querySnapshot.forEach((documentSnapshot: any) => {
             d.push(documentSnapshot.data());
           });
         }
-
         dispatch({ type: "getSavedFeed", payload: d });
       });
   } catch (e) {
