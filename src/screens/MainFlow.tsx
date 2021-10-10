@@ -3,23 +3,16 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Feed from "./Feed";
 import Saved from "./SavedPosts";
+import Profile from "./Profile";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 import MyTabBar from "../components/TabBar";
 import axios from "../config/axios";
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
-import { View, Text, Platform } from "react-native";
+import { Platform } from "react-native";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 import * as SecureStore from 'expo-secure-store';
-
-function TestScreen2() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Test 2 Screen</Text>
-    </View>
-  );
-}
 
 
 function Tabs() {
@@ -79,7 +72,7 @@ React.useEffect(() => {
         name="Home"
         component={Tabs}
       />
-      <Stack.Screen name="test-1" component={TestScreen2} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 }

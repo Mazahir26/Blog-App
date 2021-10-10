@@ -55,17 +55,19 @@ export default function MyTabBar({
         >
           TC
         </Text>
-        <Image
-          style={{
-            height: 35,
-            width: 35,
-          }}
-          source={{
-            uri: User.photoURL
-              ? User.photoURL
-              : "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&color=ececec&name=Anonymous",
-          }}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Image
+            style={{
+              height: 35,
+              width: 35,
+            }}
+            source={{
+              uri: User.photoURL
+                ? User.photoURL
+                : "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&color=ececec&name=Anonymous",
+            }}
+          />
+        </TouchableOpacity>
       </View>
       <StatusBar backgroundColor={colors.background} />
       <View style={{ alignSelf: "center" }}>
