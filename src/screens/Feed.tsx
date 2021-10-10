@@ -50,7 +50,7 @@ export default function Home() {
 
   if (Data == null) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {justifyContent: "center"}]}>
         <ActivityIndicator
           animating={true}
           size={"large"}

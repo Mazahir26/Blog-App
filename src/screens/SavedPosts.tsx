@@ -4,7 +4,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import Card from "../components/SaveCard";
 import { Context } from "../Context/SavedFeedContext";
-export default function Home() {
+export default function SavedPosts() {
   const { colors } = useTheme();
 
   const { state, Deletepost, getFeed }: any = React.useContext(Context);
@@ -21,7 +21,7 @@ export default function Home() {
 
   if (state == null) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {justifyContent: "center"}]}>
         <ActivityIndicator
           animating={true}
           size={"large"}
