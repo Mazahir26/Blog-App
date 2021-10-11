@@ -7,13 +7,20 @@ import Profile from "./Profile";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 import MyTabBar from "../components/TabBar";
 import axios from "../config/axios";
-import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 import { Platform } from "react-native";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 function Tabs() {
   const user = React.useContext(AuthenticatedUserContext);
@@ -28,41 +35,47 @@ function Tabs() {
 export default function MainFlow() {
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
-  const [isUploaded, setisUploaded] = React.useState<null | string>('load')
-  const [token, settoken] = React.useState<undefined | string>(undefined)
+  const [isUploaded, setisUploaded] = React.useState<null | string>("load");
+  const [token, settoken] = React.useState<undefined | string>(undefined);
 
-React.useEffect(() => {
-  if(isUploaded == 'load'){
-    return
-  }
-  if(isUploaded != null){
-    return
-  }
-  if(token != undefined){
-    uploadtoken(token)
-  }
-}, [token, isUploaded])
   React.useEffect(() => {
-    getValue()
-    registerForPushNotificationsAsync().then(token => settoken(token));
+    if (isUploaded == "load") {
+      return;
+    }
+    if (isUploaded != null) {
+      return;
+    }
+    if (token != undefined) {
+      uploadtoken(token);
+    }
+  }, [token, isUploaded]);
+  React.useEffect(() => {
+    getValue();
+    registerForPushNotificationsAsync().then((token) => settoken(token));
     //@ts-ignore
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log(notification)
-    });
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log(notification);
+      }
+    );
     //@ts-ignore
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
     return () => {
-      //@ts-ignore
-      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(
+        //@ts-ignore
+        notificationListener.current
+      );
       //@ts-ignore
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
   async function getValue() {
-    let res =  await SecureStore.getItemAsync("Id");
-    setisUploaded(res)
+    let res = await SecureStore.getItemAsync("Id");
+    setisUploaded(res);
   }
 
   return (
@@ -77,55 +90,50 @@ React.useEffect(() => {
   );
 }
 
-
-
-function uploadtoken(token : string | undefined)
-{
-  if(token == undefined) return;
+function uploadtoken(token: string | undefined) {
+  if (token == undefined) return;
   axios
-  .post(
-    "notifications",
-    {
-      key : token,
-    },
-  )
-  .then(() => {
-    save(token)
-  })
-  .catch((err) => {
-    console.log(err)
-  });
+    .post("notifications", {
+      key: token,
+    })
+    .then(() => {
+      save(token);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
-async function save(value :string) {
+async function save(value: string) {
   await SecureStore.setItemAsync("Id", value);
 }
 
 async function registerForPushNotificationsAsync() {
   let token;
   if (Constants.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    const {
+      status: existingStatus,
+    } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
+    if (existingStatus !== "granted") {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
   } else {
-    alert('Must use physical device for Push Notifications');
+    alert("Must use physical device for Push Notifications");
   }
 
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
+      lightColor: "#FF231F7C",
     });
   }
-  return token
-
+  return token;
 }
