@@ -147,7 +147,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 5,
   },
-  Websitelink: { color: "dodgerblue", textAlignVertical: "center" },
+  Websitelink: {
+    color: "dodgerblue",
+    textAlignVertical: "center",
+    marginBottom: 5,
+  },
   buttontext: {
     fontWeight: "bold",
     fontSize: 20,
