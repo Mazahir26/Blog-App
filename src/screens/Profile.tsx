@@ -9,7 +9,6 @@ const auth = Firebase.auth();
 
 export default function Profile() {
   const { colors } = useTheme();
-  const [notify, setnotify] = React.useState(false);
   //@ts-ignore
   const { user }: Context = React.useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
@@ -19,7 +18,6 @@ export default function Profile() {
       console.log(error);
     }
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -39,39 +37,34 @@ export default function Profile() {
             {user.email}
           </Text>
         )}
-        <Text style={[styles.Websitelinkcontainer, { color: colors.text }]}>
-          Website:
-          <Text
-            onPress={() => Linking.openURL("http://techcrunch.com/")}
-            style={styles.Websitelink}
-          >
-            http://techcrunch.com/
-          </Text>
-        </Text>
       </View>
       <View style={{ flex: 1, alignSelf: "stretch" }}>
         <View style={styles.buttonContainer}>
           <Text style={[styles.buttontext, { color: colors.text }]}>
-            Notifications
+            Terms Of Use
           </Text>
           <IconButton
-            icon={notify ? "bell-off" : "bell-ring"}
-            animated
-            color={colors.primary}
-            size={26}
-            onPress={() => setnotify(!notify)}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Text style={[styles.buttontext, { color: colors.text }]}>
-            Terms of use
-          </Text>
-          <IconButton
-            icon="file"
+            icon="database"
             animated
             color={colors.primary}
             size={26}
             onPress={() => console.log("ok")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Text style={[styles.buttontext, { color: colors.text }]}>
+            Open Source License
+          </Text>
+          <IconButton
+            icon="file-document-outline"
+            animated
+            color={colors.primary}
+            size={26}
+            onPress={() =>
+              Linking.openURL(
+                "https://github.com/Mazahir26/Rss-Project-Frontend/blob/main/LICENSE.md"
+              )
+            }
           />
         </View>
       </View>
@@ -102,7 +95,15 @@ export default function Profile() {
       >
         Report a Bug
       </Button>
-
+      <Text style={[styles.Websitelinkcontainer, { color: colors.text }]}>
+        Website:
+        <Text
+          onPress={() => Linking.openURL("http://techcrunch.com/")}
+          style={styles.Websitelink}
+        >
+          http://techcrunch.com/
+        </Text>
+      </Text>
       <Text style={[styles.verText, { color: colors.text }]}>
         Version: v0.1.0
       </Text>
@@ -145,12 +146,13 @@ const styles = StyleSheet.create({
   Websitelinkcontainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 5,
+    opacity: 0.7,
   },
   Websitelink: {
     color: "dodgerblue",
     textAlignVertical: "center",
     marginBottom: 5,
+    marginVertical: 5,
   },
   buttontext: {
     fontWeight: "bold",

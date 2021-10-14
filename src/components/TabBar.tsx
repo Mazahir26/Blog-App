@@ -10,24 +10,17 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
-
-type User = {
-  email: string;
-  uid: string;
-  isAnonymous: boolean;
-  displayName: string;
-  photoURL: string;
-};
+import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 
 export default function MyTabBar({
   state,
   descriptors,
   navigation,
   position,
-  user,
 }: any) {
-  const User: User = user;
   const { colors, dark } = useTheme();
+  //@ts-ignore
+  const { user }: Context = React.useContext(AuthenticatedUserContext);
   const width = 100;
   const inputRange = state.routes.map((_: any, i: any) => i);
   const op = position.interpolate({
@@ -62,8 +55,8 @@ export default function MyTabBar({
               width: 35,
             }}
             source={{
-              uri: User.photoURL
-                ? User.photoURL
+              uri: user.photoURL
+                ? user.photoURL
                 : "https://ui-avatars.com/api/?rounded=true&background=343434&size=128&bold=true&color=ececec&name=Anonymous",
             }}
           />
@@ -213,6 +206,18 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
 });
+
+type User = {
+  email: string;
+  uid: string;
+  isAnonymous: boolean;
+  displayName: string;
+  photoURL: string;
+};
+interface Context {
+  user: User;
+  setUser?: any;
+}
 
 // accessibilityRole="button"
 // accessibilityState={isFocused ? { selected: true } : {}}

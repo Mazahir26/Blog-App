@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Feed from "./Feed";
 import Saved from "./SavedPosts";
 import Profile from "./Profile";
-import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 import MyTabBar from "../components/TabBar";
 import axios from "../config/axios";
 import * as Notifications from "expo-notifications";
@@ -23,9 +22,8 @@ Notifications.setNotificationHandler({
 });
 
 function Tabs() {
-  const user = React.useContext(AuthenticatedUserContext);
   return (
-    <Tab.Navigator tabBar={(props: any) => <MyTabBar {...props} user={user} />}>
+    <Tab.Navigator tabBar={(props: any) => <MyTabBar {...props} />}>
       <Tab.Screen name="Latest" component={Feed} />
       <Tab.Screen name="Saved" component={Saved} />
     </Tab.Navigator>
