@@ -5,6 +5,7 @@ import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
 import AuthTextInput from "../components/AuthInputs";
 import { useTheme } from "@react-navigation/native";
 import useOnKeyboard from "../hooks/useOnKeyboard";
+import axios from "../config/axios";
 const auth = Firebase.auth();
 
 export default function Login({ navigation }: Props) {
@@ -18,6 +19,12 @@ export default function Login({ navigation }: Props) {
     try {
       if (Email !== "" && Password !== "") {
         await auth.signInWithEmailAndPassword(Email, Password);
+        axios
+          .post("analytics/1/open", {
+            name: "Login",
+          })
+          .then(() => null)
+          .catch(() => null);
       }
     } catch (error) {
       setError(error.message);
@@ -26,6 +33,12 @@ export default function Login({ navigation }: Props) {
   const signInAnonymously = async () => {
     try {
       await auth.signInAnonymously();
+      axios
+        .post("analytics/1/open", {
+          name: "anonymous",
+        })
+        .then(() => null)
+        .catch(() => null);
     } catch (error) {
       setError(error.message);
     }
@@ -57,20 +70,30 @@ export default function Login({ navigation }: Props) {
         onPress={() => onLogin()}
         style={[styles.button, { backgroundColor: colors.primary }]}
       >
-        <Text style={{ color: colors.background, fontSize: 18 }}>Login</Text>
+        <Text
+          style={{
+            color: colors.background,
+            fontSize: 18,
+            fontFamily: "Poppins_300Light",
+          }}
+        >
+          Login
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{ alignSelf: "center", marginVertical: 5 }}
         onPress={() => navigation.navigate("SignUp")}
       >
-        <Text style={{ color: colors.text }}>New here? SignUp</Text>
+        <Text style={{ color: colors.text, fontFamily: "Poppins_300Light" }}>
+          New here? SignUp
+        </Text>
       </TouchableOpacity>
       {keyboardStatus ? null : (
         <TouchableOpacity
           onPress={signInAnonymously}
           style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
         >
-          <Text style={{ color: colors.text }}>
+          <Text style={{ color: colors.text, fontFamily: "Poppins_300Light" }}>
             Don't want an account? Guest login.
           </Text>
         </TouchableOpacity>
@@ -94,17 +117,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heading: {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize: 38,
     alignSelf: "center",
     marginBottom: 20,
     color: "#343434",
+    fontFamily: "Poppins_500Medium",
   },
   subheading: {
     fontWeight: "600",
     fontSize: 18,
     alignSelf: "center",
     color: "#343434",
+    fontFamily: "Poppins_300Light",
   },
   button: {
     backgroundColor: "#343434",

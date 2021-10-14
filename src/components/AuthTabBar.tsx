@@ -107,6 +107,7 @@ export default function MyTabBar({
                       textAlign: "center",
                       color: dark ? "#343434" : "#ececec",
                       position: "absolute",
+                      fontFamily: "Poppins_300Light",
                     }}
                   >
                     {label}
@@ -118,6 +119,7 @@ export default function MyTabBar({
                       textAlign: "center",
                       color: colors.text,
                       position: "absolute",
+                      fontFamily: "Poppins_300Light",
                     }}
                   >
                     {label}

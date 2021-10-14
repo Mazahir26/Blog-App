@@ -4,6 +4,7 @@ import { ToastAndroid } from "react-native";
 const auth = Firebase.auth();
 const firestore = Firebase.firestore();
 import { Platform, UIManager, LayoutAnimation } from "react-native";
+import axios from "../config/axios";
 
 if (
   Platform.OS === "android" &&
@@ -61,6 +62,12 @@ const SaveFeed = (dispatch: any) => async (Data: rssitem) => {
       Link: Data.Link,
     };
     await firestore.collection(auth.currentUser.uid).doc(Data.Title).set(d);
+    axios
+      .post("analytics/1/open", {
+        name: "save_feed",
+      })
+      .then(() => null)
+      .catch(() => null);
     dispatch({ type: "addSavedFeed", payload: d });
   } catch (e) {
     console.warn("Error adding document: ", e);
@@ -84,6 +91,12 @@ const Deletepost = (dispatch: any) => async (Data: rssitem) => {
       .then(() => {
         dispatch({ type: "removeSavedFeed", payload: d });
       });
+    axios
+      .post("analytics/1/open", {
+        name: "remove_feed",
+      })
+      .then(() => null)
+      .catch(() => null);
   } catch (e) {
     console.warn("Error adding document: ", e);
   }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@react-navigation/native";
 import AuthTextInput from "../components/AuthInputs";
-
+import axios from "../config/axios";
 import Firebase from "../config/firebase";
 import useOnKeyboard from "../hooks/useOnKeyboard";
 
@@ -33,6 +33,12 @@ export default function Login({ navigation }: Props) {
     try {
       if (Email !== "" && Password !== "" && Name !== "") {
         await auth.createUserWithEmailAndPassword(Email, Password);
+        axios
+          .post("analytics/1/open", {
+            name: "signup",
+          })
+          .then(() => null)
+          .catch(() => null);
         updateProfile();
       }
     } catch (error) {
@@ -81,7 +87,15 @@ export default function Login({ navigation }: Props) {
         onPress={() => onSingup()}
         style={[styles.button, { backgroundColor: colors.primary }]}
       >
-        <Text style={{ color: colors.background, fontSize: 18 }}>SignUp</Text>
+        <Text
+          style={{
+            color: colors.background,
+            fontSize: 18,
+            fontFamily: "Poppins_300Light",
+          }}
+        >
+          SignUp
+        </Text>
       </TouchableOpacity>
 
       {keyboardStatus ? null : (
@@ -90,7 +104,9 @@ export default function Login({ navigation }: Props) {
             style={{ alignSelf: "center", marginVertical: 5 }}
             onPress={() => navigation.navigate("Login")}
           >
-            <Text style={{ color: colors.text }}>
+            <Text
+              style={{ color: colors.text, fontFamily: "Poppins_300Light" }}
+            >
               Already have an account? Login.
             </Text>
           </TouchableOpacity>
@@ -98,7 +114,9 @@ export default function Login({ navigation }: Props) {
             onPress={signInAnonymously}
             style={{ position: "absolute", bottom: 10, alignSelf: "center" }}
           >
-            <Text style={{ color: colors.text }}>
+            <Text
+              style={{ color: colors.text, fontFamily: "Poppins_300Light" }}
+            >
               Don't want an account? Guest login.
             </Text>
           </TouchableOpacity>
@@ -121,20 +139,21 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     paddingHorizontal: 15,
     justifyContent: "center",
-    marginTop: 10,
   },
   heading: {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize: 38,
     alignSelf: "center",
     marginBottom: 20,
     color: "#343434",
+    fontFamily: "Poppins_500Medium",
   },
   subheading: {
     fontWeight: "600",
     fontSize: 18,
     alignSelf: "center",
     color: "#343434",
+    fontFamily: "Poppins_300Light",
   },
   input: {
     marginTop: 12,

@@ -21,7 +21,7 @@ export default function SavedPosts() {
 
   if (state == null) {
     return (
-      <View style={[styles.container, {justifyContent: "center"}]}>
+      <View style={[styles.container, { justifyContent: "center" }]}>
         <ActivityIndicator
           animating={true}
           size={"large"}

@@ -42,8 +42,8 @@ export default function MyTabBar({
         <Text
           style={{
             fontSize: 22,
-            fontWeight: "bold",
             color: "#5fcb4b",
+            fontFamily: "Poppins_600SemiBold",
           }}
         >
           TC
@@ -85,12 +85,12 @@ export default function MyTabBar({
           <Text
             style={{
               fontSize: 22,
-              fontWeight: "bold",
               color: colors.primary,
               overflow: "hidden",
               width: 70,
               textAlign: "center",
               marginRight: 50,
+              fontFamily: "Poppins_400Regular",
             }}
           >
             Blogs
@@ -174,6 +174,7 @@ export default function MyTabBar({
                         textAlign: "center",
                         color: dark ? "#343434" : "#ececec",
                         position: "absolute",
+                        fontFamily: "Poppins_300Light",
                       }}
                     >
                       {label}
@@ -185,6 +186,7 @@ export default function MyTabBar({
                         textAlign: "center",
                         color: colors.text,
                         position: "absolute",
+                        fontFamily: "Poppins_300Light",
                       }}
                     >
                       {label}

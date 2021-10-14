@@ -49,6 +49,12 @@ export default function MainFlow() {
   }, [token, isUploaded]);
   React.useEffect(() => {
     getValue();
+    axios
+      .post("analytics/1/open", {
+        name: "open",
+      })
+      .then(() => null)
+      .catch(() => null);
     registerForPushNotificationsAsync().then((token) => settoken(token));
     //@ts-ignore
     notificationListener.current = Notifications.addNotificationReceivedListener(
@@ -75,7 +81,6 @@ export default function MainFlow() {
     let res = await SecureStore.getItemAsync("Id");
     setisUploaded(res);
   }
-
   return (
     <Stack.Navigator>
       <Stack.Screen

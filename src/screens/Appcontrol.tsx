@@ -10,7 +10,7 @@ import {
   // DarkTheme,
 } from "@react-navigation/native";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
-
+import useCachedFonts from "../hooks/useCachedFonts";
 // const Stack = createNativeStackNavigator();
 const auth = Firebase.auth();
 
@@ -42,6 +42,7 @@ function App() {
   const colorScheme = Appearance.getColorScheme();
   const { user, setUser }: any = React.useContext(AuthenticatedUserContext);
   const [isLoading, setIsLoading] = React.useState(true);
+  useCachedFonts();
 
   React.useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(
