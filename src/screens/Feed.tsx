@@ -50,7 +50,7 @@ export default function Home() {
 
   if (Data == null) {
     return (
-      <View style={[styles.container, {justifyContent: "center"}]}>
+      <View style={[styles.container, { justifyContent: "center" }]}>
         <ActivityIndicator
           animating={true}
           size={"large"}
@@ -76,7 +76,7 @@ export default function Home() {
             <Text
               style={{ fontSize: 22, fontWeight: "bold", textAlign: "center" }}
             >
-              Something went wrong{"/n"} Try again later.
+              Something went wrong{"\n"} Try again later.
             </Text>
           </View>
         )}

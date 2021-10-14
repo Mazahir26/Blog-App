@@ -38,7 +38,7 @@ export default function useRssParser(Url: string) {
   }
   React.useEffect(() => {
     getData();
-  }, []);
+  }, [Url]);
 
   return { Data, refresh };
 }
