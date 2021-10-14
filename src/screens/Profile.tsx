@@ -62,7 +62,7 @@ export default function Profile() {
             size={26}
             onPress={() =>
               Linking.openURL(
-                "https://github.com/Mazahir26/Rss-Project-Frontend/blob/main/LICENSE.md"
+                "https://github.com/Mazahir26/Blog-App/blob/main/LICENSE.md"
               )
             }
           />
@@ -83,7 +83,7 @@ export default function Profile() {
         }}
         color="firebrick"
       >
-        Sign Out
+        Logout
       </Button>
       <Button
         style={styles.Button}
