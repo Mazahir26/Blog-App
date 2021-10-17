@@ -1,17 +1,11 @@
 import * as React from "react";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Appearance, View, ActivityIndicator } from "react-native";
 import AuthFlow from "./AuthFlow";
 import MainFlow from "./MainFlow";
 import Firebase from "../config/firebase";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  // DarkTheme,
-} from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
 import useCachedFonts from "../hooks/useCachedFonts";
-// const Stack = createNativeStackNavigator();
 const auth = Firebase.auth();
 
 const LightTheme = {

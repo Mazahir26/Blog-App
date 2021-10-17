@@ -21,7 +21,7 @@ export default function Login({ navigation }: Props) {
         await auth.signInWithEmailAndPassword(Email, Password);
         axios
           .post("analytics/1/open", {
-            name: "Login",
+            name: "login",
           })
           .then(() => null)
           .catch(() => null);

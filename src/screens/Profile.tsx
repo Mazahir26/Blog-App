@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, Text, Image, Linking, Alert } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { Button, IconButton } from "react-native-paper";
+import axios from "../config/axios";
 
 import Firebase from "../config/firebase";
 import { AuthenticatedUserContext } from "../Context/AuthenticatedUserProvider";
@@ -14,6 +15,12 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       await auth.signOut();
+      axios
+        .post("analytics/1/open", {
+          name: "logout",
+        })
+        .then(() => null)
+        .catch(() => null);
     } catch (error) {
       console.log(error);
     }
