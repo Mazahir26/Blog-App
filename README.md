@@ -80,6 +80,12 @@ You can check out the demo here, if you want to make this app your own then foll
 
 - You can also change icons and splash image inside `/assets`.
 
+- Other than that if you know what you are doing or you are an expo dev then go nuts :wink:.
+
+### 3. Step 3
+
+- You can setup the Admin App to send push notifications and to see your userbase grow (Analytics)
+
 ## Build
 
 - Run on both Android & iOS: `expo start` (or `npm start`).
@@ -103,11 +109,12 @@ yet to add
 - Analytics
 - and much more..
 
-## Note
+## Found a Bug
 
-- it has been Tested on Andriod 10.0
-- it uses expo SDK 42
+I have tested it Andriod 10.0 and uses expo SDK 42
+
 - if you find any bugs, please raise an issue
+- or, [contact me](http://mazahir26.github.io/)
 
 ## License
 
