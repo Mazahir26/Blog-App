@@ -97,8 +97,8 @@ You can check out the demo here, if you want to make this app your own then foll
 - Build `expo build`
 
 ## Preview
-
-yet to add
+<img  src = "https://user-images.githubusercontent.com/46394948/137863725-f34337b8-d6ac-4006-a6ad-49d2e393e508.png" width="200"/> <img src = "https://user-images.githubusercontent.com/46394948/137863733-190e0af1-3499-4bf2-ae52-267a78f5de7f.png" width="200"/>
+<img src = "https://user-images.githubusercontent.com/46394948/137863736-83c400b4-bacd-4732-a705-c01b6db2ceee.png" width="200"/> <img src = "https://user-images.githubusercontent.com/46394948/137863741-1d709431-d02a-4cd0-9126-12f257d7ed79.png" width="200"/>
 
 ## Features
 
@@ -123,3 +123,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Thank You
 
 Thanks for checking out my project, I would love to see your implementations of the app, you can [contact](http://mazahir26.github.io/) me via Mail or Telegram
+
