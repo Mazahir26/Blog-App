@@ -25,7 +25,7 @@ You can check out the demo here, if you want to make this app your own then foll
 
 ### 2. Step 2
 
-- we will set the app up
+- We will set the app up
 
 - We will need a firebase account to send notifications and store data.
 
