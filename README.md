@@ -59,7 +59,7 @@ You can check out the demo here, if you want to make this app your own then foll
 
 - For push notifications to work we need one more step, you can follow this [guide](https://docs.expo.dev/push-notifications/using-fcm/#client-setup)
 
-- Finnaly you can test the app by running `$ expo start`
+- Finally you can test the app by running `$ expo start`
   but you might notice that it loads its default [Techcrunch](https://techcrunch.com/)
 
 - To change the blog website, `src/screens/Feed.tsx`
