@@ -5,7 +5,7 @@ It's an open-source app, that let's a blogger(dev.to, medium.com, wordpress.com 
 ## Table of Contents
 
 - [About](#about)
-- [Getting Started](#getting_started)
+- [Getting Started](#getting-started)
 - [Features](#features)
 
 ## About
@@ -21,7 +21,7 @@ You can check out the demo here, if you want to make this app your own then foll
 
 ### 1. Step 1
 
-- You need to set-up the server, which can be done here.
+- You need to set-up the server, which can be done [here](https://github.com/Mazahir26/Blog-App-Backend).
 
 ### 2. Step 2
 
@@ -84,7 +84,7 @@ You can check out the demo here, if you want to make this app your own then foll
 
 ### 3. Step 3
 
-- You can setup the Admin App to send push notifications and to see your userbase grow (Analytics)
+- You can setup the Admin App to send push notifications and to see your userbase grow (Analytics). [here](https://github.com/Mazahir26/Blog-App-Backend)
 
 ## Build
 
