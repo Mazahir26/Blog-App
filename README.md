@@ -17,7 +17,7 @@ and the best part is, its free. You have to Set-up some stuff, but then you are 
 
 ## Getting Started
 
-You can check out the demo here, if you want to make this app your own then follow the steps.
+You can check out the demo [here](https://github.com/Mazahir26/Blog-App/releases/tag/v1.0.0), if you want to make this app your own then follow the steps.
 
 ### 1. Step 1
 
